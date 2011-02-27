@@ -13,6 +13,7 @@ package com.destroytoday.component.button
 		function set target(value:InteractiveObject):void;
 		
 		function get state():IButtonState;
+		function set state(value:IButtonState):void;
 		
 		function get isEnabled():Boolean;
 		function set isEnabled(value:Boolean):void;
