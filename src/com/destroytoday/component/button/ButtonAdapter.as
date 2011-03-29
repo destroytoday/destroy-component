@@ -211,6 +211,8 @@ package com.destroytoday.component.button
 		
 		protected function startClick(mouseX:Number, mouseY:Number):void
 		{
+			isPointerOver = true;
+			
 			pointerDownPosition.x = mouseX;
 			pointerDownPosition.y = mouseY;
 			
@@ -220,6 +222,8 @@ package com.destroytoday.component.button
 		
 		protected function stopClick():void
 		{
+			isPointerDown = false;
+			
 			_target.stage.removeEventListener(MouseEvent.MOUSE_MOVE, stage_mouseMoveHandler);
 			_target.stage.removeEventListener(MouseEvent.MOUSE_UP, stage_mouseUpHandler);
 		}
@@ -263,8 +267,6 @@ package com.destroytoday.component.button
 		
 		protected function target_rollOverHandler(event:MouseEvent):void
 		{
-			isPointerOver = true;
-			
 			if (_target.mouseEnabled)
 				state = (isPointerDown) ? ButtonState.DOWN : ButtonState.OVER;
 		}
@@ -290,8 +292,6 @@ package com.destroytoday.component.button
 		
 		protected function stage_mouseUpHandler(event:MouseEvent):void
 		{
-			isPointerDown = false;
-			
 			stopClick();
 			
 			state = (isPointerOver) ? ButtonState.OVER : ButtonState.UP;

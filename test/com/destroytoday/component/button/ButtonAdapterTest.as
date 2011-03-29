@@ -4,18 +4,15 @@ package com.destroytoday.component.button
 	import com.destroytoday.support.TestSpriteWithStage;
 	import com.destroytoday.support.buttonadapter.TestHasCancelledButtonAdapter;
 	
-	import flash.desktop.NativeApplication;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.net.dns.AAAARecord;
 	
 	import mockolate.nice;
 	import mockolate.prepare;
 	import mockolate.received;
 	
 	import org.flexunit.async.Async;
-	import org.fluint.uiImpersonation.UIImpersonator;
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.equalTo;
 	import org.osflash.signals.Signal;
@@ -365,6 +362,22 @@ package com.destroytoday.component.button
 			
 			adapter.isEnabled = true;
 
+			adapter.target.dispatchEvent(new MouseEvent(MouseEvent.ROLL_OVER));
+			
+			assertThat(adapter.state, equalTo(ButtonState.OVER));
+		}
+		
+		[Test]
+		public function should_have_up_state_after_tapping_up_then_down_then_rolling_out_then_over():void
+		{
+			adapter = new ButtonAdapter(new TestSpriteWithStage());
+			adapter.clicked = nice(Signal);
+			
+			adapter.target.dispatchEvent(new MouseEvent(MouseEvent.ROLL_OVER));
+			adapter.target.dispatchEvent(new TestMouseEvent(MouseEvent.MOUSE_DOWN, 0.0, 0.0));
+			adapter.target.stage.dispatchEvent(new TestMouseEvent(MouseEvent.MOUSE_MOVE, 11.0, 0.0));
+			adapter.target.stage.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP));
+			adapter.target.dispatchEvent(new MouseEvent(MouseEvent.ROLL_OUT));
 			adapter.target.dispatchEvent(new MouseEvent(MouseEvent.ROLL_OVER));
 			
 			assertThat(adapter.state, equalTo(ButtonState.OVER));
