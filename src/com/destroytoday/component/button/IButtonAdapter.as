@@ -42,5 +42,8 @@ package com.destroytoday.component.button
 		
 		function get clickThreshold():Number;
 		function set clickThreshold(value:Number):void;
+		
+		function get canClickOutside():Boolean;
+		function set canClickOutside(value:Boolean):void;
 	}
 }
