@@ -85,6 +85,8 @@ package com.destroytoday.component.button
 		
 		protected var _clickThreshold:Number = 10.0;
 		
+		protected var _canClickOutside:Boolean;
+		
 		//--------------------------------------
 		// points 
 		//--------------------------------------
@@ -187,6 +189,16 @@ package com.destroytoday.component.button
 		public function set clickThreshold(value:Number):void
 		{
 			_clickThreshold = value;
+		}
+		
+		public function get canClickOutside():Boolean
+		{
+			return _canClickOutside;
+		}
+		
+		public function set canClickOutside(value:Boolean):void
+		{
+			_canClickOutside = value;
 		}
 		
 		//--------------------------------------------------------------------------
@@ -296,7 +308,7 @@ package com.destroytoday.component.button
 			
 			state = (isPointerOver) ? ButtonState.OVER : ButtonState.UP;
 			
-			if (_clicked)
+			if (_clicked && (_canClickOutside || isPointerOver))
 				_clicked.dispatch(this);
 		}
 	}

@@ -123,6 +123,18 @@ package com.destroytoday.component.button
 		}
 		
 		//--------------------------------------
+		// canClickOutside 
+		//--------------------------------------
+		
+		[Test]
+		public function cannot_click_outside_by_default():void
+		{
+			adapter = new ButtonAdapter(new Sprite());
+			
+			assertThat(!adapter.canClickOutside);
+		}
+		
+		//--------------------------------------
 		//  isEnabled
 		//--------------------------------------
 		
@@ -368,10 +380,9 @@ package com.destroytoday.component.button
 		}
 		
 		[Test]
-		public function should_have_up_state_after_tapping_up_then_down_then_rolling_out_then_over():void
+		public function should_have_up_state_after_mousing_up_then_down_then_rolling_out_then_over():void
 		{
 			adapter = new ButtonAdapter(new TestSpriteWithStage());
-			adapter.clicked = nice(Signal);
 			
 			adapter.target.dispatchEvent(new MouseEvent(MouseEvent.ROLL_OVER));
 			adapter.target.dispatchEvent(new TestMouseEvent(MouseEvent.MOUSE_DOWN, 0.0, 0.0));
@@ -381,6 +392,21 @@ package com.destroytoday.component.button
 			adapter.target.dispatchEvent(new MouseEvent(MouseEvent.ROLL_OVER));
 			
 			assertThat(adapter.state, equalTo(ButtonState.OVER));
+		}
+		
+		[Test]
+		public function should_not_dispatch_clicked_when_cannot_click_outside_and_click_outside():void
+		{
+			adapter = new ButtonAdapter(new TestSpriteWithStage());
+			adapter.clicked = nice(Signal);
+			
+			adapter.target.dispatchEvent(new MouseEvent(MouseEvent.ROLL_OVER));
+			adapter.target.dispatchEvent(new TestMouseEvent(MouseEvent.MOUSE_DOWN, 0.0, 0.0));
+			adapter.target.stage.dispatchEvent(new TestMouseEvent(MouseEvent.MOUSE_MOVE, 9.0, 0.0));
+			adapter.target.dispatchEvent(new MouseEvent(MouseEvent.ROLL_OUT));
+			adapter.target.stage.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP));
+			
+			assertThat(adapter.clicked, received().method('dispatch').never());
 		}
 	}
 }
